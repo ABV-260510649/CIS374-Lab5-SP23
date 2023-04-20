@@ -122,13 +122,21 @@ namespace Lab5
             get
             {
                 int connectedComponents = 0;
+                ResetNodeColor();
 
                 // for all the nodes
                 //     if node is white
                 //        connectedComponents++
                 //        explore the neighbors
                 //        
-
+                foreach (var node in Nodes)
+                {
+                    if (node.Color == Color.White)
+                    {
+                        DFS(node);
+                        connectedComponents++;
+                    }
+                }
                 return connectedComponents;
             }
         }
@@ -144,6 +152,13 @@ namespace Lab5
         public bool IsReachable(string nodename1, string nodename2)
         {
             ResetNodeColor();
+            var startingNode = GetNodeByName(nodename1);
+            var endingNode = GetNodeByName(nodename2);
+            DFS(startingNode);
+            if (endingNode.Color == Color.Black)
+            {
+                return true;
+            }
 
             return false;
         }
@@ -177,7 +192,6 @@ namespace Lab5
         // TODO
         private void DFSVisit(Node node, Dictionary<Node,Node> pred)
         {
-            Console.WriteLine(node);
             node.Color = Color.Gray;
 
             // sort the neighbors so that we will visit in alphabetical order
